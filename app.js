@@ -3,6 +3,10 @@ const exphbs = require('express-handlebars')
 const bodyParser = require('body-parser')
 const { urlencoded } = require('body-parser')
 const mongoose = require('mongoose')
+const Category = require('./models/category')
+const Record = require('./models/record')
+const record = require('./models/record')
+const addIcon = require('./addIcon')
 
 const app = express()
 const port = 3000
@@ -25,12 +29,30 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 //set routes
 app.get('/', (req, res) => {
-  console.log(req.query.category)
-  res.render('index')
+  let totalAmount = 0
+  Record.find()
+    .lean()
+    .then(records => {
+      records.forEach(record => totalAmount += record.amount)
+      Category.find()
+        .lean()
+        .then(categorys => res.render('index', { records, categorys, totalAmount }))
+        .catch(error => console.log(error))
+    })
+    .catch(error => console.log(error))
 })
-
 app.get('/expense/new', (req, res) => {
-  res.render('new')
+  Category.find()
+    .lean()
+    .then(categorys => res.render('new', { categorys }))
+})
+app.post('/expense/create', (req, res) => {
+  const newExpense = req.body
+  const category = req.body.category
+  newExpense.icon = addIcon(category)
+  return Record.create(newExpense)
+    .then(() => res.redirect('/'))
+    .catch(error => console.log(error))
 })
 
 //start and listen server

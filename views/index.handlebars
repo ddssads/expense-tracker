@@ -5,22 +5,22 @@
       類別
     </button>
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-      <a class="dropdown-item" href="/expense/home">家居物業</a>
-      <a class="dropdown-item" href="/expense/traffic">交通出行</a>
-      <a class="dropdown-item" href="/expense/fun">休閒娛樂</a>
-      <a class="dropdown-item" href="/expense/food">餐飲食品</a>
-      <a class="dropdown-item" href="/expense/other">其他</a>
+      {{#each categorys}}
+      <a class="dropdown-item" href='/expense/{{this.route}}'>{{this.name}}{{{this.icon}}}</a>
+      {{/each}}
     </div>
   </div>
   <div class="d-flex">
     <h4 class="mt-2">總金額：</h4>
-    <h4 class="mt-2 text-warning">123456</h4>
+    <h4 class="mt-2 text-warning">{{totalAmount}}</h4>
   </div>
   <ul class="list-group">
+    {{#each records}}
     <li class="list-group-item">
       <div class="row">
         <div class="col-auto mr-auto">
-          <h4>晚餐</h4>
+          {{this.date}}
+          <h4>{{{this.icon}}}{{this.name}}{{this.amount}}</h4>
         </div>
         <div class="col-auto">
           <a class="btn btn-secondary" href="/{{this._id}}/edit">修改</a>
@@ -30,6 +30,7 @@
         </div>
       </div>
     </li>
+    {{/each}}
   </ul>
   <a class="btn btn-info mt-3" href="/expense/new">新增支出</a>
 </div>
