@@ -87,6 +87,20 @@ app.delete('/expense/:id', (req, res) => {
     .then(() => res.redirect('/'))
     .catch(error => console.log(error))
 })
+app.get('/expense/:category', (req, res) => {
+  const keyword = req.params.category
+  let totalAmount = 0
+  Record.find({ category: keyword })
+    .lean()
+    .then(records => {
+      records.forEach(record => totalAmount += record.amount)
+      Category.find()
+        .lean()
+        .then(categorys => res.render('index', { records, categorys, totalAmount }))
+        .catch(error => console.log(error))
+    })
+    .catch(error => console.log(error))
+})
 //start and listen server
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`)
