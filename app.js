@@ -8,6 +8,7 @@ const Record = require('./models/record')
 const record = require('./models/record')
 const addIcon = require('./addIcon')
 const category = require('./models/category')
+const methodOverride = require('method-override')
 
 const app = express()
 const port = 3000
@@ -27,6 +28,7 @@ db.once('open', () => {
 })
 
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(methodOverride('_method'))
 
 //set routes
 app.get('/', (req, res) => {
@@ -67,7 +69,24 @@ app.get('/expense/:id/edit', (req, res) => {
     })
     .catch(error => console.log(error))
 })
-
+app.put('/expense/:id', (req, res) => {
+  const id = req.params.id
+  const newExpense = req.body
+  return Record.findById(id)
+    .then(record => {
+      record = Object.assign(record, newExpense)
+      return record.save()
+    })
+    .then(() => res.redirect('/'))
+    .catch(error => console.log(error))
+})
+app.delete('/expense/:id', (req, res) => {
+  const id = req.params.id
+  return Record.findById(id)
+    .then(record => record.remove())
+    .then(() => res.redirect('/'))
+    .catch(error => console.log(error))
+})
 //start and listen server
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`)
