@@ -7,6 +7,7 @@ const Category = require('./models/category')
 const Record = require('./models/record')
 const record = require('./models/record')
 const addIcon = require('./addIcon')
+const category = require('./models/category')
 
 const app = express()
 const port = 3000
@@ -52,6 +53,18 @@ app.post('/expense/create', (req, res) => {
   newExpense.icon = addIcon(category)
   return Record.create(newExpense)
     .then(() => res.redirect('/'))
+    .catch(error => console.log(error))
+})
+app.get('/expense/:id/edit', (req, res) => {
+  const id = req.params.id
+  return Record.findById(id)
+    .lean()
+    .then(record => {
+      Category.find()
+        .lean()
+        .then(categorys => res.render('edit', { record, categorys }))
+        .catch(error => console.log(error))
+    })
     .catch(error => console.log(error))
 })
 

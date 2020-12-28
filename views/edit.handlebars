@@ -1,35 +1,33 @@
 <div class="container">
-  <form action='/expense/{{id}}/edit' method="POST">
+  <form action='/expense/{{record._id}}/edit' method="POST">
     <h3 class="text-danger">*必填欄位</h3>
     <div class="form-group row">
       <label for="name" class="col-sm-2 col-form-label mt-2">名稱*：</label>
       <div class="col-sm-10">
-        <input type="text" class="form-control mt-2" name="name" id="name" required>
+        <input type="text" class="form-control mt-2" name="name" id="name" required value="{{record.name}}">
       </div>
     </div>
     <div class="form-group row">
       <label for="inputDate" class="col-sm-2 col-form-label mt-2">日期*：</label>
       <div class="col-sm-10">
-        <input type="date" class="form-control mt-2" name="date" id="inputDate" required>
+        <input type="date" class="form-control mt-2" name="date" id="inputDate" value="{{record.date}}" required>
       </div>
     </div>
     <div class="form-group row">
       <label for="inputCategory" class="col-sm-2 col-form-label mt-2">類別*：</label>
       <select id="inputCategory" class="col-sm-10 form-control " name="category" size="1" required>
-        <option selected>類別</option>
-        <option value="home">家居物業</option>
-        <option value="traffic">交通出行</option>
-        <option value="fun">休閒娛樂</option>
-        <option value="food">餐飲食品</option>
-        <option value="other">其他</option>
+        <option value="{{record.category}}" selected>{{record.category}}</option>
+        {{#each categorys}}
+        <option value="{{this.name}}">{{this.name}}</option>
+        {{/each}}
       </select>
     </div>
     <div class="form-group row">
       <label for="amount" class="col-sm-2 col-form-label mt-2">金額*：</label>
       <div class="col-sm-10">
-        <input type="number" class="form-control mt-2" name="name" id="amount" required>
+        <input type="number" class="form-control mt-2" name="name" id="amount" required value="{{record.amount}}">
       </div>
     </div>
-    <button type="submit" class="btn btn-info">新增支出</button>
+    <button type="submit" class="btn btn-info">送出</button>
   </form>
 </div>
