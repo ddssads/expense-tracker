@@ -5,6 +5,7 @@
       類別
     </button>
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+      <a class="dropdown-item" href='/'>全部</a>
       {{#each categorys}}
       <a class="dropdown-item" href='/expense/{{this.name}}'>{{this.name}}{{{this.icon}}}</a>
       {{/each}}
@@ -14,23 +15,43 @@
     <h4 class="mt-2">總金額：</h4>
     <h4 class="mt-2 text-warning">{{totalAmount}}</h4>
   </div>
-  <ul class="list-group">
+  <div class="row">
+    <div class="col-2 mt-2">
+      <h5>日期</h5>
+    </div>
+    <div class="col-2 mt-2">
+      <h5>類別</h5>
+    </div>
+    <div class="col-2 mt-2">
+      <h5>項目</h5>
+    </div>
+    <div class="col-3 mt-2">
+      <h5 class="text-warning">金額</h5>
+    </div>
+    <div class="col-3 mt-2">
+      <h5 class="text-danger">修改編輯</h5>
+    </div>
     {{#each records}}
-    <li class="list-group-item">
-      <div class="row">
-        <div class="col-auto mr-auto">
-          {{this.date}}
-          <h4>{{{this.icon}}}{{this.name}}{{this.amount}}</h4>
-        </div>
-        <div class="col-auto">
-          <a class="btn btn-secondary" href="/expense/{{this._id}}/edit">修改</a>
-          <form action="/expense/{{this._id}}?_method=DELETE" method="POST" style="display: inline;">
-            <button class="btn btn-danger" type="submit">刪除</button>
-          </form>
-        </div>
-      </div>
-    </li>
+    <div class="col-2 mt-2">
+      <h5>{{{this.date}}}</h5>
+    </div>
+    <div class="col-2 mt-2">
+      <h5>{{{this.icon}}}</h5>
+    </div>
+    <div class="col-2 mt-2">
+      <h5>{{this.name}}</h5>
+    </div>
+    <div class="col-3 mt-2">
+      <h5 class="text-warning">{{this.amount}}</h5>
+    </div>
+    <div class="col-3 mt-2">
+      <a class="btn btn-secondary" href="/expense/{{this._id}}/edit">修改</a>
+      <form action="/expense/{{this._id}}?_method=DELETE" method="POST" style="display: inline;">
+        <button class="btn btn-danger" type="submit">刪除</button>
+      </form>
+    </div>
     {{/each}}
-  </ul>
+  </div>
   <a class="btn btn-info mt-3" href="/expense/new">新增支出</a>
+</div>
 </div>

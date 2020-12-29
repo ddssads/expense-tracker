@@ -8,7 +8,7 @@ const categorylist = [
     route: 'home'
   },
   {
-    name: '交通出行 ',
+    name: '交通出行',
     icon: '<i class="fas fa-shuttle-van"></i>',
     route: 'traffic'
   },
