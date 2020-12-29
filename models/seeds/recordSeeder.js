@@ -1,5 +1,5 @@
 const Record = require('../record')
-const mongoose = require('mongoose')
+const db = require('../../config/mongoose')
 
 const recordlist = [
   {
@@ -39,15 +39,8 @@ const recordlist = [
   }
 ]
 
-mongoose.connect('mongodb://localhost/expense-tracker', { useNewUrlParser: true, useUnifiedTopology: true })
-const db = mongoose.connection
-// 連線異常
-db.on('error', () => {
-  console.log('mongodb error!')
-})
 // 連線成功
 db.once('open', () => {
-  console.log('mongodb connected!')
   recordlist.forEach(record => Record.create(record))
   console.log('done')
 })

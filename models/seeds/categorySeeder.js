@@ -1,5 +1,5 @@
 const Category = require('../category')
-const mongoose = require('mongoose')
+const db = require('../../config/mongoose')
 
 const categorylist = [
   {
@@ -28,16 +28,8 @@ const categorylist = [
     route: 'other'
   }
 ]
-
-mongoose.connect('mongodb://localhost/expense-tracker', { useNewUrlParser: true, useUnifiedTopology: true })
-const db = mongoose.connection
-// 連線異常
-db.on('error', () => {
-  console.log('mongodb error!')
-})
 // 連線成功
 db.once('open', () => {
-  console.log('mongodb connected!')
   categorylist.forEach(category => Category.create(category))
   console.log('done')
 })
