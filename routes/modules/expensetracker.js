@@ -63,7 +63,10 @@ router.get('/:category', (req, res) => {
   Record.find({ category: keyword })
     .lean()
     .then(records => {
-      records.forEach(record => totalAmount += record.amount)
+      records.forEach(record => {
+        totalAmount += record.amount
+        record.icon = addIcon(record.category)
+      })
       Category.find()
         .lean()
         .then(categorys => res.render('index', { records, categorys, totalAmount }))
