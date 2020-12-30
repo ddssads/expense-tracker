@@ -7,10 +7,6 @@ const categorySchema = new Schema({
   },
   icon: {
     type: String
-  },
-  route: {
-    type: String,
-    required: true
   }
 })
 
