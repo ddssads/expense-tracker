@@ -13,13 +13,10 @@ router.get('/', (req, res) => {
       records.forEach(record => {
         totalAmount += record.amount
         record.icon = addIcon(record.category)
-        console.log(records)
       })
       Category.find()
         .lean()
-        .then(categorys => {
-          res.render('index', { records, totalAmount, categorys })
-        })
+        .then(categorys => res.render('index', { records, totalAmount, categorys }))
         .catch(error => console.log(error))
     })
     .catch(error => console.log(error))
