@@ -36,6 +36,14 @@ const recordlist = [
 
 // 連線成功
 db.once('open', () => {
-  recordlist.forEach(record => Record.create(record))
-  console.log('done')
+  recordlist.forEach(record => {
+    Record.create(record)
+      .then(() => {
+        console.log('done')
+        return db.close()
+      })
+      .then(() => {
+        console.log('db connection close')
+      })
+  })
 })

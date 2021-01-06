@@ -24,6 +24,12 @@ db.once('open', () => {
   categorylist.forEach(category => {
     category.icon = addIcon(category.name)
     Category.create(category)
+      .then(() => {
+        console.log('done')
+        return db.close()
+      })
+      .then(() => {
+        console.log('db connection close')
+      })
   })
-  console.log('done')
 })
