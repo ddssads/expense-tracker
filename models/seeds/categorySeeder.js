@@ -21,15 +21,14 @@ const categorylist = [
 ]
 // 連線成功
 db.once('open', () => {
+  categorylist.forEach(category => category.icon = addIcon(category.name))
   categorylist.forEach(category => {
-    category.icon = addIcon(category.name)
     Category.create(category)
       .then(() => {
         console.log('done')
-        return db.close()
       })
       .then(() => {
-        console.log('db connection close')
+        return db.close()
       })
   })
 })

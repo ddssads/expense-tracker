@@ -40,10 +40,9 @@ db.once('open', () => {
     Record.create(record)
       .then(() => {
         console.log('done')
-        return db.close()
       })
       .then(() => {
-        console.log('db connection close')
+        return db.close()
       })
   })
 })
