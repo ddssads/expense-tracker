@@ -22,13 +22,12 @@ const categorylist = [
 // 連線成功
 db.once('open', () => {
   categorylist.forEach(category => category.icon = addIcon(category.name))
-  categorylist.forEach(category => {
-    Category.create(category)
-      .then(() => {
-        console.log('done')
-      })
-      .then(() => {
-        return db.close()
-      })
-  })
+  Category.create(categorylist)
+    .then(() => {
+      console.log('done')
+      return db.close()
+    })
+    .then(() => {
+      console.log('db connection close')
+    })
 })

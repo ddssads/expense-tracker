@@ -27,6 +27,10 @@ $ git clone https://github.com/ddssads/expense-tracker.git
 ```
 $ npm install
 ```
+設定資料庫
+```
+新增expense-tracker 的 database
+```
 
 執行種子資料
 ```
