@@ -14,6 +14,11 @@
 <body>
   <nav class="navbar navbar-dark bg-dark">
     <a class="navbar-brand" href="/">家庭記帳本</a>
+    {{#if isAuthenticated}}
+    <a href='/users/logout' type="button" class="btn btn-outline-info">登出</a>
+    {{else}}
+    <a href='/users/logout' type="button" class="btn btn-outline-success">登入</a>
+    {{/if}}
   </nav>
 
   {{{body}}}
