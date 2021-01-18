@@ -62,42 +62,6 @@ router.delete('/:id', (req, res) => {
     .then(() => res.redirect('/'))
     .catch(error => console.log(error))
 })
-//依類別顯示支出
-router.get('/:category', (req, res) => {
-  const userId = req.user._id
-  const keyword = req.params.category
-  let totalAmount = 0
-  Record.find({ category: keyword, userId })
-    .lean()
-    .then(records => {
-      records.forEach(record => {
-        totalAmount += record.amount
-        record.icon = addIcon(record.category)
-      })
-      Category.find()
-        .lean()
-        .then(categorys => res.render('index', { records, categorys, totalAmount }))
-        .catch(error => console.log(error))
-    })
-    .catch(error => console.log(error))
-})
-//依照月份顯示支出
-router.get('/date/:month', (req, res) => {
-  const userId = req.user._id
-  const month = req.params.month
-  let totalAmount = 0
-  Record.find({ "date": { $regex: `[0-9]{4}-${month}-[0-9]{2}` }, userId })
-    .lean()
-    .then(records => {
-      records.forEach(record => {
-        totalAmount += record.amount
-        record.icon = addIcon(record.category)
-      })
-      Category.find()
-        .lean()
-        .then(categorys => res.render('index', { records, categorys, totalAmount }))
-    })
-    .catch(error => console.log(err))
-})
+
 
 module.exports = router

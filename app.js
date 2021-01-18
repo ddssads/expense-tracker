@@ -13,6 +13,8 @@ require('./config/mongoose')
 
 const app = express()
 const PORT = process.env.PORT
+
+
 //set template engine
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')

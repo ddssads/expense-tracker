@@ -1,37 +1,20 @@
 <div class="container d-flex flex-column align-items-center">
-  <div class="dropdown mt-3">
-    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
-      aria-haspopup="true" aria-expanded="false">
-      類別
-    </button>
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-      <a class="dropdown-item" href='/'>全部</a>
-      {{#each categorys}}
-      <a class="dropdown-item" href='/expense/{{this.name}}'>{{this.name}}{{{this.icon}}}</a>
+  <form action='/' method="GET" class="mt-3">
+    <select name="month" onchange="submit()" class="form-control-lg">
+      {{#if transferMonth}}<option value="{{transferMonth.value}}">{{transferMonth.name}}</option>{{/if}}
+      <option value="">全部月份</option>
+      {{#each months}}
+      <option value="{{this.value}}">{{this.name}}</option>
       {{/each}}
-    </div>
-  </div>
-  <div class="dropdown mt-3">
-    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
-      aria-haspopup="true" aria-expanded="false">
-      月份
-    </button>
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-      <a class="dropdown-item" href='/'>全部</a>
-      <a class="dropdown-item" href='/expense/date/01'>一月</a>
-      <a class="dropdown-item" href='/expense/date/02'>二月</a>
-      <a class="dropdown-item" href='/expense/date/03'>三月</a>
-      <a class="dropdown-item" href='/expense/date/04'>四月</a>
-      <a class="dropdown-item" href='/expense/date/05'>五月</a>
-      <a class="dropdown-item" href='/expense/date/06'>六月</a>
-      <a class="dropdown-item" href='/expense/date/07'>七月</a>
-      <a class="dropdown-item" href='/expense/date/08'>八月</a>
-      <a class="dropdown-item" href='/expense/date/09'>九月</a>
-      <a class="dropdown-item" href='/expense/date/10'>十月</a>
-      <a class="dropdown-item" href='/expense/date/11'>十一月</a>
-      <a class="dropdown-item" href='/expense/date/12'>十二月</a>
-    </div>
-  </div>
+    </select>
+    <select name="category" onchange="submit()" class="form-control-lg">
+      {{#if categoryName}}<option>{{categoryName}}</option>{{/if}}
+      <option value="">全部類別</option>
+      {{#each categorys}}
+      <option value="{{this.name}}">{{this.name}}</option>
+      {{/each}}
+    </select>
+  </form>
   <div class="d-flex">
     <h4 class="mt-2">總金額：</h4>
     <h4 class="mt-2 text-warning">{{totalAmount}}</h4>
