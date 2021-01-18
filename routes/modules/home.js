@@ -5,9 +5,10 @@ const Category = require('../../models/category')
 const addIcon = require('../../addIcon')
 
 router.get('/', (req, res) => {
+  const userId = req.user._id
   let totalAmount = 0
   let showRecords = {}
-  Record.find()
+  Record.find({ userId })
     .lean()
     .then(records => {
       records.forEach(record => {

@@ -12,17 +12,20 @@ router.get('/new', (req, res) => {
 })
 //新增支出
 router.post('/create', (req, res) => {
+  const userId = req.user._id
   const newExpense = req.body
   const category = req.body.category
   newExpense.icon = addIcon(category)
+  newExpense.userId = userId
   return Record.create(newExpense)
     .then(() => res.redirect('/'))
     .catch(error => console.log(error))
 })
 //取得編輯頁面
 router.get('/:id/edit', (req, res) => {
-  const id = req.params.id
-  return Record.findById(id)
+  const userId = req.user._id
+  const _id = req.params.id
+  return Record.findOne({ _id, userId })
     .lean()
     .then(record => {
       Category.find()
@@ -37,10 +40,11 @@ router.get('/:id/edit', (req, res) => {
 })
 //編輯支出
 router.put('/:id', (req, res) => {
-  const id = req.params.id
+  const userId = req.user._id
+  const _id = req.params.id
   const newExpense = req.body
   newExpense.icon = addIcon(newExpense.category)
-  return Record.findById(id)
+  return Record.findOne({ _id, userId })
     .then(record => {
       record = Object.assign(record, newExpense)
       return record.save()
@@ -50,17 +54,19 @@ router.put('/:id', (req, res) => {
 })
 //刪除支出
 router.delete('/:id', (req, res) => {
-  const id = req.params.id
-  return Record.findById(id)
+  const userId = req.user._id
+  const _id = req.params.id
+  return Record.findOne({ _id, userId })
     .then(record => record.remove())
     .then(() => res.redirect('/'))
     .catch(error => console.log(error))
 })
 //依類別顯示支出
 router.get('/:category', (req, res) => {
+  const userId = req.user._id
   const keyword = req.params.category
   let totalAmount = 0
-  Record.find({ category: keyword })
+  Record.find({ category: keyword, userId })
     .lean()
     .then(records => {
       records.forEach(record => {
