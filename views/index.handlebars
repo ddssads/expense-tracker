@@ -11,6 +11,27 @@
       {{/each}}
     </div>
   </div>
+  <div class="dropdown mt-3">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+      aria-haspopup="true" aria-expanded="false">
+      月份
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+      <a class="dropdown-item" href='/'>全部</a>
+      <a class="dropdown-item" href='/expense/date/01'>一月</a>
+      <a class="dropdown-item" href='/expense/date/02'>二月</a>
+      <a class="dropdown-item" href='/expense/date/03'>三月</a>
+      <a class="dropdown-item" href='/expense/date/04'>四月</a>
+      <a class="dropdown-item" href='/expense/date/05'>五月</a>
+      <a class="dropdown-item" href='/expense/date/06'>六月</a>
+      <a class="dropdown-item" href='/expense/date/07'>七月</a>
+      <a class="dropdown-item" href='/expense/date/08'>八月</a>
+      <a class="dropdown-item" href='/expense/date/09'>九月</a>
+      <a class="dropdown-item" href='/expense/date/10'>十月</a>
+      <a class="dropdown-item" href='/expense/date/11'>十一月</a>
+      <a class="dropdown-item" href='/expense/date/12'>十二月</a>
+    </div>
+  </div>
   <div class="d-flex">
     <h4 class="mt-2">總金額：</h4>
     <h4 class="mt-2 text-warning">{{totalAmount}}</h4>
@@ -25,10 +46,13 @@
     <div class="col-2 mt-2">
       <h5>項目</h5>
     </div>
-    <div class="col-3 mt-2">
+    <div class="col-2 mt-2">
+      <h5>商家</h5>
+    </div>
+    <div class="col-2 mt-2">
       <h5 class="text-warning">金額</h5>
     </div>
-    <div class="col-3 mt-2">
+    <div class="col-2 mt-2">
       <h5 class="text-danger">修改編輯</h5>
     </div>
     {{#each records}}
@@ -41,10 +65,13 @@
     <div class="col-2 mt-2">
       <h5>{{this.name}}</h5>
     </div>
-    <div class="col-3 mt-2">
+    <div class="col-2 mt-2">
+      <h5>{{this.merchant}}</h5>
+    </div>
+    <div class="col-2 mt-2">
       <h5 class="text-warning">{{this.amount}}</h5>
     </div>
-    <div class="col-3 mt-2">
+    <div class="col-2 mt-2">
       <a class="btn btn-secondary" href="/expense/{{this._id}}/edit">修改</a>
       <form action="/expense/{{this._id}}?_method=DELETE" method="POST" style="display: inline;">
         <button class="btn btn-danger" type="submit">刪除</button>
