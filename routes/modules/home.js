@@ -9,6 +9,12 @@ router.get('/', (req, res) => {
   const monthValue = req.query.month
   const categoryName = req.query.category
   const userId = req.user._id
+
+  let query = {
+    dateSearch: { date: { $regex: `[0-9]{4}-${monthValue}-[0-9]{2}` }, userId },
+    categorySearch: { category: categoryName, userId },
+    combineSearch: { $and: [{ category: categoryName, userId }, { date: { $regex: `[0-9]{4}-${monthValue}-[0-9]{2}` }, userId }] }
+  }
   let months = [
     { name: '一月', value: '01' },
     { name: '二月', value: '02' },
@@ -24,7 +30,8 @@ router.get('/', (req, res) => {
     { name: '十二月', value: '12' },
   ]
   let totalAmount = 0
-  if (!monthValue && !categoryName) {
+  //一開始的畫面&&month及category條件都為全部
+  if ((!monthValue && !categoryName) || (monthValue === '' && categoryName === '')) {
     return Record.find()
       .lean()
       .then(records => {
@@ -39,50 +46,49 @@ router.get('/', (req, res) => {
       })
       .catch(error => console.log(error))
   }
-  //有query進來
-  if (categoryName || monthValue) {
-    //全部類別
-    if (categoryName === '') {
-      return Record.find({ date: { $regex: `[0-9]{4}-${monthValue}-[0-9]{2}` }, userId })
-        .lean()
-        .then(records => {
-          records.forEach(record => {
-            totalAmount += record.amount
-            record.icon = addIcon(record.category)
-          })
-          Category.find()
-            .lean()
-            .then(categorys => {
-              const transferMonth = getMonth(monthValue)
-              months = months.filter(month => month.value !== monthValue)
-              //傳找到的收支紀錄、總金額、類別(下拉選單用)、月份(下拉選單用)、transferMonth(顯示當前月份的篩選條件)
-              res.render('index', { records, totalAmount, categorys, months, transferMonth })
-            })
-            .catch(error => console.log(error))
+  //month條件為全部
+  if (monthValue === '') {
+    return Record.find(query.categorySearch)
+      .lean()
+      .then(records => {
+        records.forEach(record => {
+          totalAmount += record.amount
+          record.icon = addIcon(record.category)
         })
-        .catch(error => console.log(error))
-      //全部月份
-    } else if (monthValue === '') {
-      return Record.find({ category: categoryName, userId })
-        .lean()
-        .then(records => {
-          records.forEach(record => {
-            totalAmount += record.amount
-            record.icon = addIcon(record.category)
+        Category.find()
+          .lean()
+          .then(categorys => {
+            categorys = categorys.filter(category => category.name !== categoryName)
+            //傳找到的收支紀錄、總金額、類別(下拉選單用)、月份(下拉選單用)、categoryName(顯示當前類別的篩選條件)
+            res.render('index', { records, totalAmount, categorys, months, categoryName })
           })
-          Category.find()
-            .lean()
-            .then(categorys => {
-              categorys = categorys.filter(category => category.name !== categoryName)
-              //傳找到的收支紀錄、總金額、類別(下拉選單用)、月份(下拉選單用)、categoryName(顯示當前類別的篩選條件)
-              res.render('index', { records, totalAmount, categorys, months, categoryName })
-            })
-            .catch(error => console.log(error))
-        })
-        .catch(error => console.log(error))
-    }
+          .catch(error => console.log(error))
+      })
+      .catch(error => console.log(error))
   }
-  return Record.find({ $and: [{ category: categoryName, userId }, { date: { $regex: `[0-9]{4}-${monthValue}-[0-9]{2}` }, userId }] })
+  //category條件為全部
+  if (categoryName === '') {
+    return Record.find(query.dateSearch)
+      .lean()
+      .then(records => {
+        records.forEach(record => {
+          totalAmount += record.amount
+          record.icon = addIcon(record.category)
+        })
+        Category.find()
+          .lean()
+          .then(categorys => {
+            const transferMonth = getMonth(monthValue)
+            months = months.filter(month => month.value !== monthValue)
+            //傳找到的收支紀錄、總金額、類別(下拉選單用)、月份(下拉選單用)、transferMonth(顯示當前月份的篩選條件)
+            res.render('index', { records, totalAmount, categorys, months, transferMonth })
+          })
+          .catch(error => console.log(error))
+      })
+      .catch(error => console.log(error))
+  }
+  //依照類別及月分下去篩選
+  return Record.find(query.combineSearch)
     .lean()
     .then(records => {
       records.forEach(record => {
